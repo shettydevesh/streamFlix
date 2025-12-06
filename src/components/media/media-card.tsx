@@ -19,7 +19,7 @@ interface MediaCardProps {
 
 export function MediaCard({ media, className, width = 300, height = 450 }: MediaCardProps) {
     const isMovie = media.media_type ? media.media_type === "movie" : "title" in media;
-    const title = "title" in media && media.title ? media.title : media.name;
+    const title = "title" in media ? media.title : media.name;
     const date = "release_date" in media ? media.release_date : media.first_air_date;
     const year = date ? new Date(date).getFullYear() : "N/A";
     const href = isMovie ? `/movies/${media.id}` : `/tv/${media.id}`;
