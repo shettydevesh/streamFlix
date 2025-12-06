@@ -11,6 +11,8 @@ import { MediaCarousel } from "@/components/media/media-carousel";
 import { getMovieCredits, getMovieDetail, getSimilarMovies, getImage } from "@/lib/tmdb";
 import { getOMDBRatings } from "@/lib/omdb";
 import { Ratings } from "@/components/media/ratings";
+import { WatchlistButton } from "@/components/media/watchlist-button";
+import { ContinueWatchingButton } from "@/components/media/continue-watching-button";
 import { Separator } from "@/components/ui/separator";
 
 interface Props {
@@ -123,13 +125,8 @@ export default async function MoviePage({ params }: Props) {
                                 </div>
 
                                 <div className="flex flex-wrap gap-4 pt-4">
-                                    <Button size="lg" className="gap-2 text-base" asChild>
-                                        <Link href={`/movies/${movie.id}/watch`}>
-                                            <Play className="h-5 w-5 fill-current" />
-                                            Watch Now
-                                        </Link>
-                                    </Button>
-                                    {/* Trailer button can be added here */}
+                                    <ContinueWatchingButton media={movie} size="lg" className="text-base" />
+                                    <WatchlistButton item={movie} variant="full" />
                                 </div>
                             </div>
                         </div>

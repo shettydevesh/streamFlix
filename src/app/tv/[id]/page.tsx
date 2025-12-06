@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import { Calendar, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import { CastCard } from "@/components/media/cast-card";
 import { EpisodeList } from "@/components/media/episode-list";
 import { MediaCarousel } from "@/components/media/media-carousel";
+import { WatchlistButton } from "@/components/media/watchlist-button";
+import { ContinueWatchingButton } from "@/components/media/continue-watching-button";
 import { getSeasonDetails, getSimilarTV, getTVCredits, getTVDetail, getImage } from "@/lib/tmdb";
 import { getOMDBRatings } from "@/lib/omdb";
 import { Ratings } from "@/components/media/ratings";
@@ -125,12 +127,8 @@ export default async function TVPage({ params, searchParams }: Props) {
                                 </div>
 
                                 <div className="flex flex-wrap gap-4 pt-4">
-                                    {/* Start watching from S1E1 */}
-                                    <Button size="lg" className="gap-2 text-base" asChild>
-                                        <Link href={`/tv/${tv.id}/watch?s=1&e=1`}>
-                                            Start Watching
-                                        </Link>
-                                    </Button>
+                                    <ContinueWatchingButton media={tv} size="lg" className="text-base" />
+                                    <WatchlistButton item={tv} variant="full" />
                                 </div>
                             </div>
                         </div>
@@ -167,20 +165,31 @@ export default async function TVPage({ params, searchParams }: Props) {
                         </div>
 
                         {/* Season Selector */}
-                        <Tabs defaultValue={seasonNumber.toString()} className="w-full">
-                            <ScrollArea className="w-full whitespace-nowrap pb-4">
-                                <TabsList className="mb-4">
-                                    {tv.seasons.map((s) => (
-                                        <TabsTrigger key={s.id} value={s.season_number.toString()} asChild>
-                                            <Link href={`?season=${s.season_number}`} scroll={false}>
+                        {/* Season Selector */}
+                        <ScrollArea className="w-full whitespace-nowrap">
+                            <div className="flex w-max space-x-2 pb-4">
+                                {tv.seasons.map((s) => {
+                                    const isActive = s.season_number === seasonNumber;
+                                    return (
+                                        <Link
+                                            key={s.id}
+                                            href={`?season=${s.season_number}`}
+                                            scroll={false}
+                                        >
+                                            <div className={cn(
+                                                "rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-primary/90",
+                                                isActive
+                                                    ? "bg-primary text-primary-foreground"
+                                                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                            )}>
                                                 {s.name}
-                                            </Link>
-                                        </TabsTrigger>
-                                    ))}
-                                </TabsList>
-                                <ScrollBar orientation="horizontal" />
-                            </ScrollArea>
-                        </Tabs>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                            <ScrollBar orientation="horizontal" />
+                        </ScrollArea>
 
                         {/* Episode List */}
                         {seasonDetails && (

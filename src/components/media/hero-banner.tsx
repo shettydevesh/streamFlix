@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Info, Play, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { WatchlistButton } from "@/components/media/watchlist-button";
+import { ContinueWatchingButton } from "@/components/media/continue-watching-button";
 import { getImage } from "@/lib/tmdb";
 import { Movie, TVShow } from "@/types/tmdb";
 import Image from "next/image";
@@ -58,19 +60,17 @@ export function HeroBanner({ media }: HeroBannerProps) {
                         {media.overview}
                     </p>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <Button asChild size="lg" className="gap-2 text-base font-semibold">
-                            <Link href={watchHref}>
-                                <Play className="h-5 w-5 fill-current" />
-                                Watch Now
-                            </Link>
-                        </Button>
-                        <Button asChild variant="secondary" size="lg" className="gap-2 text-base font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30 text-white">
+                    <div className="flex gap-4 pt-4">
+                        <ContinueWatchingButton media={media} size="lg" className="text-base font-semibold" />
+                        <Button variant="secondary" size="lg" className="gap-2 text-base font-semibold backdrop-blur-sm bg-white/20 hover:bg-white/30 text-white" asChild>
                             <Link href={href}>
                                 <Info className="h-5 w-5" />
                                 More Info
                             </Link>
                         </Button>
+                        <div className="flex items-center">
+                            <WatchlistButton item={media} variant="icon" className="h-11 w-11 rounded-md border border-input bg-background/50 hover:bg-accent hover:text-accent-foreground" />
+                        </div>
                     </div>
                 </div>
             </div>

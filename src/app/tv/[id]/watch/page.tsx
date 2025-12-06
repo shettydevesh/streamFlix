@@ -71,7 +71,16 @@ export default async function TVWatchPage({ params, searchParams }: Props) {
                     {currentEpisode && <h2 className="text-xl font-medium">{currentEpisode.name}</h2>}
                 </div>
 
-                <VideoPlayer id={tvId} type="tv" season={seasonNumber} episode={episodeNumber} />
+                <VideoPlayer
+                    id={tvId}
+                    type="tv"
+                    season={seasonNumber}
+                    episode={episodeNumber}
+                    title={tv.name}
+                    poster_path={tv.poster_path}
+                    backdrop_path={tv.backdrop_path}
+                    episode_title={currentEpisode?.name}
+                />
 
                 {/* Episode Navigation Controls */}
                 <div className="flex items-center justify-between">

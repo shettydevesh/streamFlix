@@ -8,6 +8,7 @@ import {
 } from "@/lib/tmdb";
 import { HeroBanner } from "@/components/media/hero-banner";
 import { MediaCarousel } from "@/components/media/media-carousel";
+import { ContinueWatchingRow } from "@/components/media/continue-watching-row";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -41,6 +42,9 @@ export default async function Home() {
             items={trendingMoviesWeek.results}
             viewAllLink="/movies"
           />
+
+          <ContinueWatchingRow />
+
           <MediaCarousel
             title="Trending TV Series"
             items={trendingTV.results}

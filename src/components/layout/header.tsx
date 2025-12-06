@@ -33,6 +33,12 @@ export function Header() {
                         >
                             TV Series
                         </Link>
+                        <Link
+                            href="/watchlist"
+                            className="transition-colors hover:text-foreground/80 text-foreground/60"
+                        >
+                            My List
+                        </Link>
                     </nav>
                 </div>
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -53,6 +59,7 @@ export function Header() {
                         <nav className="flex flex-col gap-4 mt-8">
                             <Link href="/movies" onClick={() => setIsOpen(false)}>Movies</Link>
                             <Link href="/tv" onClick={() => setIsOpen(false)}>TV Series</Link>
+                            <Link href="/watchlist" onClick={() => setIsOpen(false)}>My List</Link>
                         </nav>
                     </SheetContent>
                 </Sheet>

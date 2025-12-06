@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+// No change here yet, will check video-player.tsx
 import { notFound } from "next/navigation";
 import { VideoPlayer } from "@/components/player/video-player";
 import { getMovieDetail } from "@/lib/tmdb";
@@ -35,7 +36,13 @@ export default async function MovieWatchPage({ params }: Props) {
                     <h1 className="text-2xl font-bold md:text-3xl">Now Playing: <span className="text-primary">{movie.title}</span></h1>
                 </div>
 
-                <VideoPlayer id={movieId} type="movie" />
+                <VideoPlayer
+                    id={movieId}
+                    type="movie"
+                    title={movie.title}
+                    poster_path={movie.poster_path}
+                    backdrop_path={movie.backdrop_path}
+                />
 
                 <div className="space-y-4 max-w-4xl">
                     <h2 className="text-xl font-semibold">Overview</h2>
