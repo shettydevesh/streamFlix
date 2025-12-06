@@ -1,35 +1,72 @@
-# StreamFlix
+# 🎬 StreamFlix
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**StreamFlix** is a modern, premium streaming platform built with Next.js 15. It aggregates content from TMDB and provides seamless streaming capabilities for Movies and TV Shows.
 
-## Getting Started
+## ✨ Features
 
-First, run the development server:
+- **Discovery**: Trending, Popular, Top Rated, and Upcoming Movies & TV Shows.
+- **Search**: Real-time multi-search for finding content.
+- **Detailed Info**: Rich metadata including cast, genres, runtime, and ratings (IMDb & Rotten Tomatoes).
+- **Streaming**: Integrated video player for instant playback of Movies and TV Episodes.
+- **TV Series**: Full season and episode navigation.
+- **Design**: Modern, responsive UI with Dark Mode, built using **shadcn/ui** and **Tailwind CSS**.
+- **UX**: Loading skeletons, graceful error handling, and intuitive navigation.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Data Provider**: [TMDB API](https://www.themoviedb.org/)
+- **Ratings**: [OMDB API](https://www.omdbapi.com/)
+- **Streaming Source**: VidLink
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally.
+
+### Prerequisites
+
+- Node.js 18+ installed.
+- API Keys for TMDB and OMDB.
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/shettydevesh/streamFlix.git
+   cd streamFlix
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup:**
+   Create a `.env.local` file in the root directory and add your API keys:
+
+   ```env
+   NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_api_key_here
+   NEXT_PUBLIC_OMDB_API_KEY=your_omdb_api_key_here
+   ```
+
+4. **Run the Development Server:**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+## 📦 Build
+
+To create a production build:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📄 License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
+This project is for educational purposes. Content data provided by TMDB.
