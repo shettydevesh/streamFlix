@@ -7,6 +7,7 @@ import { WatchlistProvider } from "@/context/watchlist-context";
 import { WatchHistoryProvider } from "@/context/watch-history-context";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/context/auth-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,16 +40,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <WatchlistProvider>
-            <WatchHistoryProvider>
-              <Header />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              <Toaster />
-            </WatchHistoryProvider>
-          </WatchlistProvider>
+          <AuthProvider>
+            <WatchlistProvider>
+              <WatchHistoryProvider>
+                <Header />
+                <main className="flex-1">
+                  {children}
+                </main>
+                <Footer />
+                <Toaster />
+              </WatchHistoryProvider>
+            </WatchlistProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

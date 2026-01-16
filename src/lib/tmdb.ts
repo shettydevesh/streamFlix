@@ -151,7 +151,14 @@ export const getMovieGenres = async () => {
     return data;
 };
 
+// ... existing code ...
+
 export const getTVGenres = async () => {
     const { data } = await tmdbClient.get<{ genres: Genre[] }>("/genre/tv/list");
+    return data;
+};
+
+export const getExternalIds = async (id: number, type: "movie" | "tv") => {
+    const { data } = await tmdbClient.get<{ imdb_id: string | null }>(`/${type}/${id}/external_ids`);
     return data;
 };

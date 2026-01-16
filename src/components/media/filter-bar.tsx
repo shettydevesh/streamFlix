@@ -69,7 +69,7 @@ export function FilterBar({ genres }: FilterBarProps) {
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4">
                 <ScrollArea className="w-full whitespace-nowrap pb-2">
                     <div className="flex w-max space-x-2">
                         <Button

@@ -9,6 +9,7 @@ import { Movie, TVShow } from "@/types/tmdb";
 import { cn } from "@/lib/utils";
 import { WatchlistButton } from "@/components/media/watchlist-button";
 import Image from "next/image";
+import { IMDBRatingBadge } from "@/components/media/imdb-rating-badge";
 
 interface MediaCardProps {
     media: Movie | TVShow;
@@ -47,10 +48,11 @@ export function MediaCard({ media, className, width = 300, height = 450 }: Media
                             </div>
                         </div>
                         <div className="absolute top-2 left-2"> {/* Adjusted position to avoid overlap */}
-                            <Badge variant="secondary" className="flex items-center gap-1 bg-black/60 text-white hover:bg-black/80 backdrop-blur-sm">
-                                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                                {media.vote_average.toFixed(1)}
-                            </Badge>
+                            <IMDBRatingBadge
+                                tmdbId={media.id}
+                                mediaType={isMovie ? "movie" : "tv"}
+                                voteAverage={media.vote_average}
+                            />
                         </div>
                     </div>
                     <div className="pt-2">

@@ -8,7 +8,7 @@ import {
 } from "@/lib/tmdb";
 import { HeroBanner } from "@/components/media/hero-banner";
 import { MediaCarousel } from "@/components/media/media-carousel";
-import { ContinueWatchingRow } from "@/components/media/continue-watching-row";
+import { HomeAuthSection } from "@/components/home/home-auth-section";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -43,7 +43,8 @@ export default async function Home() {
             viewAllLink="/movies"
           />
 
-          <ContinueWatchingRow />
+
+          <HomeAuthSection />
 
           <MediaCarousel
             title="Trending TV Series"
