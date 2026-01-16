@@ -33,35 +33,106 @@ export function WatchHistoryProvider({ children }: { children: React.ReactNode }
     const { user } = useAuth();
 
     // Load initial state
+    // Load initial state
     useEffect(() => {
         const loadHistory = async () => {
             if (user) {
-                // Fetch from Supabase
-                const { data, error } = await supabase
+                // 1. Fetch Cloud History
+                const { data: cloudData, error } = await supabase
                     .from("watch_history")
-                    .select("*")
-                    .order("last_watched", { ascending: false });
+                    .select("*");
 
                 if (error) {
                     console.error("Error fetching watch history:", error);
-                } else if (data) {
-                    // Map snake_case DB columns to our HistoryItem type if needed, 
-                    // or ensure DB columns match. 
-                    // Based on my SQL, metadata is a jsonb. 
-                    // Let's assume we store the whole item in metadata or flatten it.
-                    // The plan said: columns + metadata jsonb.
-                    // Let's rely on storing the minimal fields in cols and the rest in metadata.
-                    // Actually, simpler: 
-                    // Map rows back to HistoryItem.
-                    const mapped: HistoryItem[] = data.map(row => ({
-                        ...row.metadata, // title, poster_path, etc.
+                    return;
+                }
+
+                let finalHistory: HistoryItem[] = [];
+                if (cloudData) {
+                    finalHistory = cloudData.map(row => ({
+                        ...row.metadata,
                         id: row.media_id,
                         type: row.media_type,
                         timestamp: row.timestamp,
                         lastWatched: row.last_watched,
                     }));
-                    setHistory(mapped);
                 }
+
+                // 2. Check Local History for items to merge
+                const stored = localStorage.getItem("streamflix-watch-history");
+                if (stored) {
+                    try {
+                        const localHistory: HistoryItem[] = JSON.parse(stored);
+                        const itemsToSync: HistoryItem[] = [];
+
+                        localHistory.forEach(localItem => {
+                            const cloudItem = finalHistory.find(c => c.id === localItem.id);
+                            // If local item is missing in cloud OR local item is newer
+                            if (!cloudItem || new Date(localItem.lastWatched) > new Date(cloudItem.lastWatched)) {
+                                itemsToSync.push(localItem);
+                            }
+                        });
+
+                        if (itemsToSync.length > 0) {
+                            console.log("Syncing local history to cloud:", itemsToSync.length, "items");
+                            const { error: syncError } = await supabase
+                                .from("watch_history")
+                                .upsert(
+                                    itemsToSync.map(item => ({
+                                        user_id: user.id,
+                                        media_id: item.id,
+                                        media_type: item.type,
+                                        timestamp: item.timestamp,
+                                        last_watched: item.lastWatched, // Trust local timestamp
+                                        metadata: {
+                                            title: item.title,
+                                            poster_path: item.poster_path,
+                                            backdrop_path: item.backdrop_path,
+                                            season_number: item.season_number,
+                                            episode_number: item.episode_number,
+                                            episode_title: item.episode_title
+                                        }
+                                    })),
+                                    { onConflict: 'user_id, media_id, media_type' }
+                                );
+
+                            if (syncError) {
+                                console.error("Error syncing local history merged items:", syncError);
+                            } else {
+                                // Add synced items to our final in-memory list (or could refetch)
+                                // We'll just update the memory list to avoid another network call, 
+                                // although refetching is safer for "last_watched" sorting.
+                                // Let's just refetch to be clean and simple.
+                                const { data: refetchedData } = await supabase
+                                    .from("watch_history")
+                                    .select("*")
+                                    .order("last_watched", { ascending: false });
+
+                                if (refetchedData) {
+                                    finalHistory = refetchedData.map(row => ({
+                                        ...row.metadata,
+                                        id: row.media_id,
+                                        type: row.media_type,
+                                        timestamp: row.timestamp,
+                                        lastWatched: row.last_watched,
+                                    }));
+                                }
+
+                                // Determine if we should clear local storage.
+                                // If we don't clear, we might re-sync next time. 
+                                // Since we check dates, it's idempotent-ish, but let's clear to keep it clean.
+                                localStorage.removeItem("streamflix-watch-history");
+                            }
+                        } else {
+                            // Sort default fetch
+                            finalHistory.sort((a, b) => new Date(b.lastWatched).getTime() - new Date(a.lastWatched).getTime());
+                        }
+                    } catch (e) {
+                        console.error("Failed to parse local history for merge", e);
+                    }
+                }
+
+                setHistory(finalHistory);
             } else {
                 // Load from LocalStorage
                 const stored = localStorage.getItem("streamflix-watch-history");
