@@ -12,7 +12,7 @@ import {
 } from "@/types/tmdb";
 
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-const TMDB_BASE_URL = "https://api.themoviedb.org/3";
+const TMDB_BASE_URL = "https://api.tmdb.org/3";
 
 const tmdbClient = axios.create({
     baseURL: TMDB_BASE_URL,
