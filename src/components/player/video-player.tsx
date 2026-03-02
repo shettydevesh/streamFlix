@@ -35,7 +35,7 @@ export function VideoPlayer({
     episode_title
 }: VideoPlayerProps) {
     const { addToHistory } = useWatchHistory();
-    const [playerEngine, setPlayerEngine] = useState("vidsrc");
+    const [playerEngine, setPlayerEngine] = useState("vidlink_jw");
     const [autoplay, setAutoplay] = useState("false");
     const [baseUrl, setBaseUrl] = useState("");
 
