@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "stream-flix",
+  "compatibility_date": "2026-05-12",
+  "observability": {
+    "enabled": true
+  },
+  "compatibility_flags": ["nodejs_compat"],
+  // Self-reference binding for Next.js server actions
+  // Commenting out for first deploy - uncomment after worker exists
+  // "services": [
+  //   {
+  //     "binding": "WORKER_SELF_REFERENCE",
+  //     "service": "stream-flix"
+  //   }
+  // ]
+}
